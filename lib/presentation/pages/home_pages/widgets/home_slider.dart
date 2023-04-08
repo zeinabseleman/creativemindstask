@@ -8,16 +8,17 @@ import '../../../shared_widgets/common_network_image.dart';
 import '../../../shared_widgets/common_slider.dart';
 
 
-class HomeSlider extends StatelessWidget {
+class HomeSlider extends StatefulWidget {
 
   HomeSlider({super.key,});
 
+  @override
+  State<HomeSlider> createState() => _HomeSliderState();
+}
+
+class _HomeSliderState extends State<HomeSlider> {
  final sliderController = CarouselController();
-
-  final int pageIndex = 0;
-  final indicatorController =
-  PageController(viewportFraction: 1, keepPage: true, initialPage: 0);
-
+ int currentIndex = 0;
  @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,11 +36,16 @@ class HomeSlider extends StatelessWidget {
       },
       controller: sliderController,
       reverse: false,
+       onChange: (index, reason) {
+         setState(() {
+          currentIndex = index;
+         });
+       },
         ),
         SizedBox(height: 10.h,),
-        SmoothPageIndicator(
+        AnimatedSmoothIndicator(
           textDirection: TextDirection.rtl,
-          controller: indicatorController,
+          activeIndex: currentIndex,
           count: 3,
           axisDirection: Axis.horizontal,
           effect: ExpandingDotsEffect(
